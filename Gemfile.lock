@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    Spaced (0.1.0)
+    spaced (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -35,11 +35,11 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
-  Spaced!
   minitest (~> 5.0)
   rake (~> 13.0)
   rubocop (~> 1.21)
   rubocop-minitest
+  spaced!
 
 BUNDLED WITH
    2.3.7

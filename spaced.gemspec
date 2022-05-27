@@ -3,7 +3,7 @@
 require_relative "lib/spaced/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "Spaced"
+  spec.name = "spaced"
   spec.version = Spaced::VERSION
   spec.authors = ["Joel Moss"]
   spec.email = ["joel@developwithstyle.com"]
