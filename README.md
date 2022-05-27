@@ -1,8 +1,32 @@
 # Spaced
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/spaced`. To experiment with that code, run `bin/console` for an interactive prompt.
+Spaced is a super simple and convenient way to isolate and namespace a collection of related methods.
 
-TODO: Delete this and the text above, and describe your gem
+```ruby
+class User
+    namespace :twitter do
+        def create(msg)
+            api.create_tweet msg
+        end
+
+        def read(id)
+            api.read_tweet id
+        end
+
+        private
+
+            def api
+                @api ||= TwitterClient.new(api_token: parent.api_token)
+            end
+    end
+end
+
+user = User.new
+id = user.twitter.create("Spaced man!")
+user.twitter.read(id)
+```
+
+In the example above, `namespace` creates and initializes a new class `Twitter` and returns it from the `#twitter` method. The parent class - in this case `User` - is available at `#parent` and `@parent` from within the namespace.
 
 ## Installation
 
@@ -11,18 +35,6 @@ Add this line to your application's Gemfile:
 ```ruby
 gem 'spaced'
 ```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install spaced
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Development
 
