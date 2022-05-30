@@ -4,21 +4,25 @@ Spaced is a super simple and convenient way to isolate and namespace a collectio
 
 ```ruby
 class User
-    namespace :twitter do
-        def create(msg)
-            api.create_tweet msg
-        end
-
-        def read(id)
-            api.read_tweet id
-        end
-
-        private
-
-            def api
-                @api ||= TwitterClient.new(api_token: parent.api_token)
-            end
+  # Pass a black with a bunch of methods.
+  namespace :twitter do
+    def create(msg)
+      api.create_tweet msg
     end
+
+    def read(id)
+      api.read_tweet id
+    end
+
+    private
+
+      def api
+        @api ||= TwitterClient.new(api_token: parent.api_token)
+      end
+  end
+
+  # Or pass a predefined class.
+  namespace :facebook, Facebook::Api
 end
 
 user = User.new
