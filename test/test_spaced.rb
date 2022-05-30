@@ -3,6 +3,12 @@
 require "test_helper"
 
 class TestSpaced < Minitest::Test
+  class Daddy
+    def full_name
+      "Kevin Moss"
+    end
+  end
+
   class User
     include Spaced
 
@@ -11,6 +17,8 @@ class TestSpaced < Minitest::Test
         "Lesley Moss"
       end
     end
+
+    namespace :dad, Daddy
   end
 
   def test_that_it_has_a_version_number
@@ -20,6 +28,11 @@ class TestSpaced < Minitest::Test
   def test_should_create_class
     user = User.new
     assert_kind_of TestSpaced::User::Mum, user.mum
+  end
+
+  def test_should_accept_class
+    user = User.new
+    assert_kind_of TestSpaced::Daddy, user.dad
   end
 
   def test_should_respond_to_parent_instance_var

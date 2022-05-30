@@ -14,11 +14,13 @@ module Spaced
   end
 
   module ClassMethods
-    def namespace(name, &)
-      class_name = name.to_s.split("_").collect(&:capitalize).join
-      klass = eval <<-RUBY, binding, __FILE__, __LINE__ + 1 # rubocop:disable Security/Eval
+    def namespace(name, klass = nil, &)
+      unless klass
+        class_name = name.to_s.split("_").collect(&:capitalize).join
+        klass = eval <<-RUBY, binding, __FILE__, __LINE__ + 1 # rubocop:disable Security/Eval
         #{self}::#{class_name} = Class.new(Base, &)  # Parent::Namespace = Class.new(Base, &)
-      RUBY
+        RUBY
+      end
 
       inst_name = :"@#{name}"
       define_method name do
