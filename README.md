@@ -1,6 +1,8 @@
 # Spaced
 
-Spaced is a super simple and convenient way to isolate and namespace a collection of related methods.
+Spaced is a super simple and convenient way to isolate and namespace a collection of related methods into any class.
+
+## Usage
 
 ```ruby
 class User
@@ -14,14 +16,6 @@ class User
 
     def read(id)
       api.read_tweet id
-    end
-
-    def call(msg)
-      create msg
-    end
-
-    def predicate
-      subject.twitter_id?
     end
 
     private
@@ -38,11 +32,40 @@ end
 user = User.new
 id = user.twitter.create("Spaced man!")
 user.twitter.read(id)
-user.twitter!("Spaced man!") # calls the `call` method.
-user.twitter? # calls the `predicate` method.
 ```
 
 In the example above, `namespace` creates and initializes a new class `Twitter` and returns it from the `#twitter` method. The parent class - in this case `User` - is available at `#parent` and `@parent` from within the namespace.
+
+## Magic bang and predicate methods
+
+If you define a `call` method in your namespaced class, you can then conveniently call that with a bang method:
+
+```ruby
+class User < Spaced::Base
+  include Spaced
+
+  namespace :tweet do
+    def call(content)
+      create_tweet content
+    end
+  end
+end
+
+user = User.new
+user.tweet!('my new tweet') # Will call the `#call` method with whatever arguments you give it.
+```
+
+There is also an equivalent `predicate` method:
+
+```ruby
+namespace :tweet do
+  def predicate
+    false
+  end
+end
+user = User.new
+user.tweet? # Will call the `#predicate` method.
+```
 
 ## Installation
 
