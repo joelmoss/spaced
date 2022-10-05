@@ -3,7 +3,7 @@
 require "test_helper"
 
 class TestSpaced < Minitest::Test
-  class Daddy
+  class Daddy < Spaced::Base
     def full_name
       "Kevin Moss"
     end
@@ -19,6 +19,15 @@ class TestSpaced < Minitest::Test
     end
 
     namespace :dad, Daddy
+    namespace :brother do
+      def call(append = nil)
+        "Andy Moss#{append}"
+      end
+
+      def predicate
+        true
+      end
+    end
   end
 
   def test_that_it_has_a_version_number
@@ -48,5 +57,16 @@ class TestSpaced < Minitest::Test
   def test_should_expose_method
     user = User.new
     assert_equal "Lesley Moss", user.mum.full_name
+  end
+
+  def test_call
+    user = User.new
+    assert_equal "Andy Moss", user.brother!
+    assert_equal "Andy Moss?", user.brother!("?")
+  end
+
+  def test_predicate
+    user = User.new
+    assert user.brother?
   end
 end

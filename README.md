@@ -16,6 +16,14 @@ class User
       api.read_tweet id
     end
 
+    def call(msg)
+      create msg
+    end
+
+    def predicate
+      subject.twitter_id?
+    end
+
     private
 
       def api
@@ -23,13 +31,15 @@ class User
       end
   end
 
-  # Or pass a predefined class.
+  # Or pass a predefined class, which should subclass `Spaced::Base`.
   namespace :facebook, Facebook::Api
 end
 
 user = User.new
 id = user.twitter.create("Spaced man!")
 user.twitter.read(id)
+user.twitter!("Spaced man!") # calls the `call` method.
+user.twitter? # calls the `predicate` method.
 ```
 
 In the example above, `namespace` creates and initializes a new class `Twitter` and returns it from the `#twitter` method. The parent class - in this case `User` - is available at `#parent` and `@parent` from within the namespace.
