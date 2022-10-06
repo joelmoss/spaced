@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "spaced/version"
-require "forwardable"
 
 module Spaced
   def self.included(base)
@@ -20,7 +19,7 @@ module Spaced
         raise "#{klass} must be a subclass of Spaced::Base" unless klass < Spaced::Base
       else
         class_name = name.to_s.split("_").collect(&:capitalize).join
-        klass = eval <<-RUBY, binding, __FILE__, __LINE__ + 1 # rubocop:disable Security/Eval
+        klass = module_eval <<-RUBY, __FILE__, __LINE__ + 1
         #{self}::#{class_name} = Class.new(Base, &)  # Parent::Namespace = Class.new(Base, &)
         RUBY
       end
@@ -41,21 +40,22 @@ module Spaced
       # Define the bang and predicate methods.
       methods = klass.instance_methods(false)
 
-      if methods.include?(:call) || methods.include?(:predicate)
-        extend Forwardable
-        def_delegator :"#{name}", :call, :"#{name}!" if methods.include?(:call)
-        def_delegator :"#{name}", :predicate, :"#{name}?" if methods.include?(:predicate)
+      if methods.include?(:call)
+        module_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{name}!(...); #{name}.call(...); end # def user!(...); user.call(...); end
+        RUBY
       else
-        unless methods.include?(:call)
-          define_method :"#{name}!" do
-            raise NoMethodError, "undefined method `#{name}!' for #<#{klass}>. Have you defined `#{klass}#call`?"
-          end
+        define_method :"#{name}!" do
+          raise NoMethodError, "undefined method `#{name}!' for #<#{klass}>. Have you defined `#{klass}#call`?", caller
         end
+      end
 
-        unless methods.include?(:predicate)
-          define_method :"#{name}?" do
-            raise NoMethodError, "undefined method `#{name}?' for #<#{klass}>. Have you defined `#{klass}#predicate`?"
-          end
+      if methods.include?(:predicate)
+        define_method(:"#{name}?") { send(name).predicate }
+      else
+        define_method :"#{name}?" do
+          raise NoMethodError, "undefined method `#{name}?' for #<#{klass}>. Have you defined `#{klass}#predicate`?",
+                caller
         end
       end
     end
