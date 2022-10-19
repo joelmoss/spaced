@@ -14,6 +14,7 @@ module Spaced
   end
 
   module ClassMethods
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
     def namespace(name, klass = nil, &)
       if klass
         raise "#{klass} must be a subclass of Spaced::Base" unless klass < Spaced::Base
@@ -59,5 +60,6 @@ module Spaced
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/PerceivedComplexity
   end
 end
