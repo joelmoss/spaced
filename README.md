@@ -41,7 +41,7 @@ In the example above, `namespace` creates and initializes a new class `Twitter` 
 If you define a `call` method in your namespaced class, you can then conveniently call that with a bang method:
 
 ```ruby
-class User < Spaced::Base
+class User
   include Spaced
 
   namespace :tweet do
