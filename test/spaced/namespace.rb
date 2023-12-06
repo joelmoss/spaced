@@ -25,7 +25,7 @@ describe ".namespace" do
     expect(user.mum.full_name).to be == "Lesley Moss"
   end
 
-  with "bang method" do
+  with "'call' bang method" do
     it "aliases to #call" do
       expect(user.brother!).to be == "Andy Moss"
     end
@@ -37,9 +37,45 @@ describe ".namespace" do
     end
   end
 
-  with "predicate method" do
+  with "bang named method" do
+    it "aliases to #sister!" do
+      expect(user.sister!).to be == "Alex Moss"
+    end
+
+    with "arguments" do
+      it "passes through arguments" do
+        expect(user.sister!("?")).to be == "Alex Moss?"
+      end
+    end
+  end
+
+  with "bang underscore method" do
+    it "aliases to #_!" do
+      expect(user.mother!).to be == "Lesley Moss"
+    end
+
+    with "arguments" do
+      it "passes through arguments" do
+        expect(user.mother!("?")).to be == "Lesley Moss?"
+      end
+    end
+  end
+
+  with "'predicate' method" do
     it "aliases to #predicate" do
       expect(user.brother?).to be == true
+    end
+  end
+
+  with "predicate named method" do
+    it "aliases to #sister?" do
+      expect(user.sister?).to be == true
+    end
+  end
+
+  with "predicate underscore method" do
+    it "aliases to #_?" do
+      expect(user.mother?).to be == true
     end
   end
 end

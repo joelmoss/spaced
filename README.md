@@ -38,33 +38,50 @@ In the example above, `namespace` creates and initializes a new class `Twitter` 
 
 ## Magic bang and predicate methods
 
-If you define a `call` method in your namespaced class, you can then conveniently call that with a bang method:
+If you define a `#_!` or `#call` method in your namespaced class, you can then conveniently call that with a bang method:
 
 ```ruby
 class User
   include Spaced
 
   namespace :tweet do
-    def call(content)
+    def _!(content)
       create_tweet content
     end
   end
 end
 
 user = User.new
-user.tweet!('my new tweet') # Will call the `#call` method with whatever arguments you give it.
+user.tweet!('my new tweet') # Will call the `#_!` method with whatever arguments you give it.
 ```
 
-There is also an equivalent `predicate` method:
+There is also an equivalent predicate method:
 
 ```ruby
 namespace :tweet do
-  def predicate
+  def _?
     false
   end
 end
 user = User.new
 user.tweet? # Will call the `#predicate` method.
+```
+
+Both bang and predicate methods can be defined using identically named methods:
+
+```ruby
+namespace :tweet do
+  def tweet?
+    false
+  end
+
+  def tweet!
+    # ...
+  end
+end
+user = User.new
+user.tweet? # Will call the `#tweet?` method on `:tweet` namespace.
+user.tweet! # Will call the `#tweet!` method on `:tweet` namespace.
 ```
 
 ## Installation
