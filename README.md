@@ -8,7 +8,7 @@ Spaced is a super simple and convenient way to isolate and namespace a collectio
 class User
   include Spaced
 
-  # Pass a black with a bunch of methods.
+  # Pass a block with a bunch of methods.
   namespace :twitter do
     def create(msg)
       api.create_tweet msg
