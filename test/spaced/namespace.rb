@@ -77,5 +77,9 @@ describe ".namespace" do
     it "aliases to #_?" do
       expect(user.mother?).to be == true
     end
+
+    it "supports arguments" do
+      expect(user.mother?(:foo, bar: 1)).to be == true
+    end
   end
 end

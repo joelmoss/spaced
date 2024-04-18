@@ -61,15 +61,15 @@ module Spaced
 
       if methods.include?(:_?)
         module_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def #{name}?; #{name}._?; end # def user?; user._?; end
+          def #{name}?(...); #{name}._?(...); end # def user?; user._?; end
         RUBY
       elsif methods.include?(:"#{name}?")
         module_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def #{name}?; #{name}.#{name}?; end # def user?; user.user?; end
+          def #{name}?(...); #{name}.#{name}?(...); end # def user?; user.user?; end
         RUBY
       elsif methods.include?(:predicate) # DEPRECATED
         module_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def #{name}?; #{name}.predicate; end # def user?; user.predicate; end
+          def #{name}?(...); #{name}.predicate(...); end # def user?; user.predicate; end
         RUBY
       else
         define_method :"#{name}?" do

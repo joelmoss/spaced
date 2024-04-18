@@ -35,7 +35,7 @@ class User
       "Lesley Moss#{append}"
     end
 
-    def _?
+    def _?(*, **)
       true
     end
   end
