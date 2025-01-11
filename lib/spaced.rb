@@ -14,13 +14,13 @@ module Spaced
   end
 
   module ClassMethods
-    def namespace(name, klass = nil, &) # rubocop:disable Metrics/*
+    def namespace(name, klass = nil, &block) # rubocop:disable Metrics/*
       if klass
         raise "#{klass} must be a subclass of Spaced::Base" unless klass < Spaced::Base
       else
         class_name = name.to_s.split("_").collect(&:capitalize).join
         klass = module_eval <<-RUBY, __FILE__, __LINE__ + 1
-        #{self}::#{class_name} = Class.new(Base, &)  # Parent::Namespace = Class.new(Base, &)
+        #{self}::#{class_name} = Class.new(Base, &block)  # Parent::Namespace = Class.new(Base, &block)
         RUBY
       end
 
