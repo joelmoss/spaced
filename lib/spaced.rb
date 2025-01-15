@@ -14,7 +14,7 @@ module Spaced
   end
 
   module ClassMethods
-    def namespace(name, klass = nil, &block) # rubocop:disable Metrics/*
+    def namespace(name, klass = nil, &block) # rubocop:disable Metrics,Naming/BlockForwarding,Lint/UnusedMethodArgument
       if klass
         raise "#{klass} must be a subclass of Spaced::Base" unless klass < Spaced::Base
       else
