@@ -5,8 +5,9 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in spaced.gemspec
 gemspec
 
-gem "rake", "~> 13.0"
-gem "rubocop", "~> 1.21"
-gem "rubocop-minitest"
-gem "rubocop-rake"
+group :development do
+  gem "rubocop"
+  gem "rubocop-minitest"
+end
+
 gem "sus", group: :test
