@@ -8,20 +8,50 @@ on:
   pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
+  tests:
     strategy:
+      fail-fast: false
       matrix:
-        ruby:
-          - '3.1.1'
+        os: ["ubuntu-latest", "macos-latest"]
+        ruby-version:
+          - "3.2"
+          - "3.3"
+          - "3.4"
+
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true
-    - name: Run the default task
-      run: bundle exec rake
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          bundle config set --local without "development"
+          bundle install
+
+      - name: Tests
+        run: bundle exec sus
+
+  rubocop:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: |
+          bundle config set --local only "development"
+          bundle install
+
+      - name: Rubocop
+        run: bundle exec rubocop
