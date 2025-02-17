@@ -10,15 +10,6 @@ class User
   end
 
   namespace :dad, Daddy
-  namespace :brother do
-    def call(append = nil)
-      "Andy Moss#{append}"
-    end
-
-    def predicate
-      true
-    end
-  end
 
   namespace :sister do
     def sister!(append = nil)

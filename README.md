@@ -38,7 +38,7 @@ In the example above, `namespace` creates and initializes a new class `Twitter` 
 
 ## Magic bang and predicate methods
 
-If you define a `#_!` or `#call` method in your namespaced class, you can then conveniently call that with a bang method:
+If you define a `#_!` method in your namespaced class, you can then conveniently call that with a bang method:
 
 ```ruby
 class User
@@ -64,7 +64,7 @@ namespace :tweet do
   end
 end
 user = User.new
-user.tweet? # Will call the `#predicate` method.
+user.tweet? # Will call the `#_?` method.
 ```
 
 Both bang and predicate methods can be defined using identically named methods:
