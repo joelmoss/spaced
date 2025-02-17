@@ -38,7 +38,7 @@ module Spaced
       end
 
       # Define the bang and predicate methods.
-      methods = klass.instance_methods(false)
+      methods = klass.public_instance_methods
 
       if methods.include?(:_!)
         module_eval <<-RUBY, __FILE__, __LINE__ + 1
