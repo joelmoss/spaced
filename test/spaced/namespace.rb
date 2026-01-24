@@ -64,4 +64,16 @@ describe ".namespace" do
       expect(user.mother?(:foo, bar: 1)).to be == true
     end
   end
+
+  with "assignment named method" do
+    it "aliases to #sister=" do
+      expect(user.sister = :foo).to be == :foo
+    end
+  end
+
+  with "assignment underscore method" do
+    it "aliases to #_=" do
+      expect(user.mother = :foo).to be == :foo
+    end
+  end
 end

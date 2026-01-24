@@ -70,6 +70,22 @@ module Spaced
                 caller
         end
       end
+
+      if methods.include?(:_=)
+        module_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{name}=(value); #{name}._=(value); end # def user=; user._=; end
+        RUBY
+      elsif methods.include?(:"#{name}=")
+        module_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def #{name}=(value); #{name}.#{name}=(value); end # def user=; user.user=; end
+        RUBY
+      else
+        define_method :"#{name}=" do |_value|
+          raise NoMethodError,
+                "undefined method `#{name}=' for #<#{klass}>. Have you defined `#{klass}#_=` or `#{klass}##{name}=`?",
+                caller
+        end
+      end
     end
   end
 end

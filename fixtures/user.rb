@@ -19,6 +19,10 @@ class User
     def sister?
       true
     end
+
+    def sister=(value)
+      value
+    end
   end
 
   namespace :mother do
@@ -28,6 +32,10 @@ class User
 
     def _?(*, **)
       true
+    end
+
+    def _=(value)
+      value
     end
   end
 end

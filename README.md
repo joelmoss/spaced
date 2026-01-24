@@ -1,6 +1,6 @@
 # Spaced
 
-Spaced is a super simple and convenient way to isolate and namespace a collection of related methods into any class.
+Spaced is a super simple and convenient way to isolate and namespace a collection of related instance methods into any class.
 
 ## Usage
 
@@ -27,6 +27,22 @@ class User
 
   # Or pass a predefined class, which should subclass `Spaced::Base`.
   namespace :facebook, Facebook::Api
+
+  class Facebook::Api < Spaced::Base
+    def create(msg)
+      api.create_post msg
+    end
+
+    def read(id)
+      api.read_post id
+    end
+
+    private
+
+      def api
+        @api ||= FacebookClient.new(api_token: parent.api_token)
+      end
+  end
 end
 
 user = User.new
@@ -82,6 +98,32 @@ end
 user = User.new
 user.tweet? # Will call the `#tweet?` method on `:tweet` namespace.
 user.tweet! # Will call the `#tweet!` method on `:tweet` namespace.
+```
+
+## Setter methods
+
+You can also define a `#_=` setter method in your namespace:
+
+```ruby
+namespace :tweet do
+  def _=(value)
+    update_tweet value
+  end
+end
+user = User.new
+user.tweet = 'updated content' # Will call the `#_=` method.
+```
+
+As with bang and predicate methods, you can use a named setter instead:
+
+```ruby
+namespace :tweet do
+  def tweet=(value)
+    update_tweet value
+  end
+end
+user = User.new
+user.tweet = 'updated content' # Will call the `#tweet=` method on `:tweet` namespace.
 ```
 
 ## Installation
